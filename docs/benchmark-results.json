@@ -1,0 +1,313 @@
+{
+  "generated_at": "2026-10-27T17:42:01.922Z",
+  "environment": {
+    "node": "v24.21.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "os_release": "23.6.0",
+    "cpu_model": "Apple M2",
+    "logical_cpus": 8,
+    "total_memory_bytes": 8589934592
+  },
+  "config": {
+    "samples": 7,
+    "warmups": 2,
+    "sizes_codepoints": [
+      1000,
+      5000,
+      10000
+    ],
+    "edits_per_branch": {
+      "inserts": 100,
+      "deletes": 25
+    },
+    "concurrent_branches": 2,
+    "clock": "performance.now",
+    "transport_and_serialization_in_timing": false,
+    "seed_scheme": "0x5eed + size for shuffled replay; 0xace/0xbdf + size for edit positions"
+  },
+  "results": [
+    {
+      "initial_codepoints": 1000,
+      "initial_operations": 1000,
+      "initial_log_utf8_bytes": 68805,
+      "merged_operations": 1250,
+      "merged_visible_codepoints": 1150,
+      "merged_log_utf8_bytes": 85356,
+      "timings": {
+        "initial_insert": {
+          "median_ms": 6.988,
+          "min_ms": 4.288,
+          "max_ms": 8.606,
+          "samples_ms": [
+            8.002,
+            7.367,
+            5.142,
+            8.606,
+            6.988,
+            6.622,
+            4.288
+          ]
+        },
+        "ordered_replay": {
+          "median_ms": 4.376,
+          "min_ms": 2.849,
+          "max_ms": 6.685,
+          "samples_ms": [
+            4.646,
+            6.685,
+            2.849,
+            4.376,
+            6.091,
+            4.249,
+            3.97
+          ]
+        },
+        "shuffled_replay": {
+          "median_ms": 4.828,
+          "min_ms": 3.092,
+          "max_ms": 13.846,
+          "samples_ms": [
+            13.846,
+            4.828,
+            3.092,
+            8.393,
+            6.929,
+            4.058,
+            3.701
+          ]
+        },
+        "concurrent_local_edits": {
+          "median_ms": 304.1,
+          "min_ms": 140.123,
+          "max_ms": 649.444,
+          "samples_ms": [
+            649.444,
+            278.642,
+            304.1,
+            321.291,
+            343.316,
+            175.582,
+            140.123
+          ]
+        },
+        "bidirectional_merge": {
+          "median_ms": 5.653,
+          "min_ms": 2.569,
+          "max_ms": 17.765,
+          "samples_ms": [
+            17.765,
+            2.569,
+            7.138,
+            13.849,
+            5.644,
+            5.653,
+            4.377
+          ]
+        },
+        "render_text": {
+          "median_ms": 1.072,
+          "min_ms": 0.625,
+          "max_ms": 4.32,
+          "samples_ms": [
+            4.32,
+            1.072,
+            1.002,
+            1.612,
+            1.103,
+            0.907,
+            0.625
+          ]
+        }
+      }
+    },
+    {
+      "initial_codepoints": 5000,
+      "initial_operations": 5000,
+      "initial_log_utf8_bytes": 352913,
+      "merged_operations": 5250,
+      "merged_visible_codepoints": 5150,
+      "merged_log_utf8_bytes": 369693,
+      "timings": {
+        "initial_insert": {
+          "median_ms": 21.938,
+          "min_ms": 11.718,
+          "max_ms": 22.855,
+          "samples_ms": [
+            22.441,
+            22.855,
+            11.718,
+            22.185,
+            18.256,
+            21.938,
+            21.622
+          ]
+        },
+        "ordered_replay": {
+          "median_ms": 19.207,
+          "min_ms": 17.355,
+          "max_ms": 24.401,
+          "samples_ms": [
+            24.401,
+            19.277,
+            17.355,
+            17.613,
+            20.147,
+            18.297,
+            19.207
+          ]
+        },
+        "shuffled_replay": {
+          "median_ms": 20.821,
+          "min_ms": 18.043,
+          "max_ms": 25.272,
+          "samples_ms": [
+            22.333,
+            25.272,
+            18.043,
+            20.085,
+            20.821,
+            20.838,
+            19.922
+          ]
+        },
+        "concurrent_local_edits": {
+          "median_ms": 831.554,
+          "min_ms": 768.331,
+          "max_ms": 954.651,
+          "samples_ms": [
+            876.047,
+            831.554,
+            768.331,
+            809.474,
+            847.799,
+            830.866,
+            954.651
+          ]
+        },
+        "bidirectional_merge": {
+          "median_ms": 21.37,
+          "min_ms": 17.463,
+          "max_ms": 25.506,
+          "samples_ms": [
+            23.867,
+            17.463,
+            23.399,
+            20.571,
+            19.04,
+            21.37,
+            25.506
+          ]
+        },
+        "render_text": {
+          "median_ms": 4.341,
+          "min_ms": 2.801,
+          "max_ms": 4.665,
+          "samples_ms": [
+            4.323,
+            2.801,
+            4.101,
+            4.341,
+            4.391,
+            4.393,
+            4.665
+          ]
+        }
+      }
+    },
+    {
+      "initial_codepoints": 10000,
+      "initial_operations": 10000,
+      "initial_log_utf8_bytes": 708049,
+      "merged_operations": 10250,
+      "merged_visible_codepoints": 10150,
+      "merged_log_utf8_bytes": 725098,
+      "timings": {
+        "initial_insert": {
+          "median_ms": 50.29,
+          "min_ms": 44.418,
+          "max_ms": 79.405,
+          "samples_ms": [
+            44.418,
+            79.405,
+            50.805,
+            49.157,
+            62.96,
+            50.29,
+            47.233
+          ]
+        },
+        "ordered_replay": {
+          "median_ms": 49.137,
+          "min_ms": 44.814,
+          "max_ms": 60.178,
+          "samples_ms": [
+            44.814,
+            49.137,
+            51.116,
+            60.178,
+            58.387,
+            46.67,
+            45.202
+          ]
+        },
+        "shuffled_replay": {
+          "median_ms": 47.516,
+          "min_ms": 45.614,
+          "max_ms": 74.587,
+          "samples_ms": [
+            47.367,
+            74.587,
+            47.516,
+            45.614,
+            58.603,
+            46.816,
+            64.03
+          ]
+        },
+        "concurrent_local_edits": {
+          "median_ms": 1932.784,
+          "min_ms": 1444.784,
+          "max_ms": 2567.206,
+          "samples_ms": [
+            1986.399,
+            2567.206,
+            1444.784,
+            2338.623,
+            1857.316,
+            1732.818,
+            1932.784
+          ]
+        },
+        "bidirectional_merge": {
+          "median_ms": 40.337,
+          "min_ms": 27.892,
+          "max_ms": 51.105,
+          "samples_ms": [
+            37.813,
+            44.626,
+            27.892,
+            51.105,
+            40.476,
+            40.258,
+            40.337
+          ]
+        },
+        "render_text": {
+          "median_ms": 8.661,
+          "min_ms": 5.708,
+          "max_ms": 19.791,
+          "samples_ms": [
+            9.882,
+            8.561,
+            19.791,
+            11.114,
+            8.661,
+            7.782,
+            5.708
+          ]
+        }
+      }
+    }
+  ]
+}
