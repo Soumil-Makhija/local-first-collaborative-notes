@@ -1,4 +1,8 @@
-const CACHE = 'fieldnotes-shell-v1';
+// Every release that changes any SHELL asset MUST use a new, unique cache name.
+// This also changes the worker bytes, triggering installation of the fresh shell.
+// Never populate an active release's cache in place: a failed install must leave
+// that release intact. Old caches are removed only after successful activation.
+const CACHE = 'fieldnotes-shell-v2';
 const SHELL = ['/', '/index.html', '/styles.css', '/icon.svg', '/src/app.js', '/src/crdt.js', '/src/store.js', '/src/backup.js', '/src/peer.js'];
 self.addEventListener('install', event => event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(SHELL)).then(() => self.skipWaiting())));
 self.addEventListener('activate', event => event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key.startsWith('fieldnotes-shell-') && key !== CACHE).map(key => caches.delete(key)))).then(() => self.clients.claim())));

@@ -503,6 +503,23 @@ test('hash navigation opens saved notes and restores the visible note after reje
   await expect(page).toHaveURL(secondUrl);
   await expect(page.locator('#document-id')).toHaveValue(secondId);
   await expect(editor(page)).toHaveValue('Unsaved work stays visible');
+  const downloadPromise = page.waitForEvent('download');
+  await page.locator('#export').click();
+  const backup = JSON.parse(await readFile(await (await downloadPromise).path(), 'utf8'));
+  const recovery = await page.evaluate(async ({ docId, operations }) => {
+    const { Rga } = await import('/src/crdt.js');
+    const { openStore } = await import('/src/store.js');
+    const store = await openStore();
+    try {
+      return {
+        exported: new Rga('export-check', operations).text,
+        stored: new Rga('stored-check', await store.load(docId)).text,
+      };
+    } finally { store.close(); }
+  }, backup);
+  expect(backup.docId).toBe(secondId);
+  expect(recovery.exported).toBe('Unsaved work stays visible');
+  expect(recovery.stored).toBe('Second hash navigation note漢');
 });
 
 test('narrow mobile layout supports skip navigation, keyboard editing and moving focus', async ({ browser, baseURL }) => {

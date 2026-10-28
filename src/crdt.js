@@ -48,15 +48,18 @@ function validateOperation(input) {
   if (keys.some((key) => typeof key !== 'string' || !own(descriptors[key], 'value') || !descriptors[key].enumerable)) {
     throw new TypeError('Operation fields must be enumerable data properties');
   }
-  const expected = input.type === 'insert' ? ['type', 'id', 'after', 'value']
-    : input.type === 'delete' ? ['type', 'id', 'target'] : null;
+  // Read only an own data descriptor: a missing field may otherwise invoke a
+  // getter inherited from an untrusted object's prototype before rejection.
+  const type = own(descriptors, 'type') ? descriptors.type.value : undefined;
+  const expected = type === 'insert' ? ['type', 'id', 'after', 'value']
+    : type === 'delete' ? ['type', 'id', 'target'] : null;
   if (!expected || keys.length !== expected.length || !expected.every((key) => own(input, key))) {
     throw new TypeError('Operation has an unknown type or unexpected fields');
   }
   const identity = parseId(input.id);
   let reference = null;
   let operation;
-  if (input.type === 'insert') {
+  if (type === 'insert') {
     if (typeof input.value !== 'string' || input.value.length > 2
         || [...input.value].length !== 1 || !validUnicode(input.value)) {
       throw new TypeError('An insertion value must contain exactly one Unicode code point');

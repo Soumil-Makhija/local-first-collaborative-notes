@@ -4,9 +4,10 @@
 channel (`notes-v1`, protocol `notes-crdt-v1`) per document pairing. There is no
 signaling service, discovery service, STUN server, TURN relay, or presence service.
 The user transfers an offer and an answer through a channel they choose. Both
-payloads include the document ID; a peer must select or create that document before
-accepting an offer. Document IDs use the same ASCII letters/digits/underscore/hyphen
-format as the local store, with a maximum length of 80.
+payloads include the document ID. The UI opens or creates that document before
+accepting an offer; callers of the transport API must do the same. Document IDs
+use the same ASCII letters/digits/underscore/hyphen format as the local store,
+with a maximum length of 80.
 
 This configuration uses host ICE candidates only. It is useful between browser
 contexts on one machine and may work across a reachable local network. NAT,
@@ -104,9 +105,18 @@ cannot be canceled; queued callbacks that have not started are discarded.
 objects to verify strict signaling, complete ICE gathering and timeout, matching
 document IDs, unexpected channels/answers, UTF-8 framing, reverse frame delivery,
 initial and live log delivery, buffer pause/resume, bounded queues, serialized
-async callbacks, cleanup, and invalid-message rejection. These tests verify the
-protocol implementation; actual browser connectivity needs browser integration
-tests and depends on the environment described above.
+async callbacks, cleanup, and invalid-message rejection.
+
+`npm run test:e2e` also exercises real browser data channels: manually transferring
+offers and answers between isolated browser contexts, delivering a full history
+across multiple frames, sending live edits in both directions, composing while
+peer edits arrive, disconnecting and making independent edits, then re-pairing
+and checking equal persisted text after reload. This suite passed locally in
+Chrome 156 on macOS. Linux CI is configured to install the Chromium revision
+pinned by the locked Playwright dependency; see the [CI runs](https://github.com/Soumil-Makhija/local-first-collaborative-notes/actions)
+for commit-specific results. These same-machine browser tests do not establish cross-device or arbitrary-network
+reachability. No other browser engine, operating-system IME, or physical-device
+network has been certified by this evidence.
 
 The implementation follows the browser events and buffering model in the
 [W3C WebRTC specification](https://www.w3.org/TR/webrtc/).

@@ -26,7 +26,7 @@ history and merge with an existing note of the same ID.
 ### Pair two browsers
 
 Run this app on each device at its own localhost origin (or serve the static
-assets over HTTPS). Use **Pair a peer** on both:
+assets at the root of an HTTPS origin). Use **Pair a peer** on both:
 
 1. First browser: select **Create offer**; copy **Your pairing data**.
 2. Second browser: paste it into **Peer pairing data**, select **Accept offer**.
@@ -74,6 +74,22 @@ npm run test:e2e             # real IndexedDB, offline, WebRTC, import/export, n
 PLAYWRIGHT_CHROME=1 npm run test:e2e
 ```
 
+The browser suite passed locally with **Chrome 156 on macOS**. It exercises real
+IndexedDB transactions, offline reload and reopening, manually signaled WebRTC
+across separate browser contexts, multi-frame synchronization, disconnected edits
+and re-pairing, concurrent tabs, backup download/import, queued note transitions,
+synthetic composition events, and keyboard use at a narrow viewport. These are
+same-machine tests; other devices, browser engines, real IMEs, screen readers and
+cross-device network connectivity remain unverified.
+
+[CI](.github/workflows/ci.yml) installs the lockfile and runs behavioral tests,
+syntax checks, the demo and a short benchmark invariant check on Node 22 and 24.
+A separate Linux job installs the Chromium revision pinned by the locked
+Playwright dependency and runs the browser suite, retaining traces and screenshots
+for failed tests for seven days. See the [Actions runs](https://github.com/Soumil-Makhija/local-first-collaborative-notes/actions)
+for results from the exact commit you use. The one-sample CI benchmark is a
+correctness smoke check, not a performance comparison.
+
 [Measurements and reproduction](docs/BENCHMARKS.md) include raw samples, runtime,
 hardware, log sizes and explicit exclusions. Core timings exclude browser storage,
 serialization and network latency; they are not a claim about WAN collaboration.
@@ -94,6 +110,13 @@ with backpressure, checks version/document IDs, and serializes incoming processi
 `src/app.js` adapts textarea changes to CRDT edits and defers remote edits during
 composition. `sw.js` caches only the static app shell. The local static server has
 an explicit asset allowlist and no data endpoint.
+
+When releasing a changed app shell, assign a **new unique `CACHE` name in `sw.js`**
+for every release that changes any listed shell asset. This changes the worker
+script so returning browsers install fresh assets. Keeping the worker unchanged
+leaves its cache-first shell in use even while online. A successful new worker
+removes the previous shell cache; reload to run the new app code. Release caches
+must never be overwritten in place. This does not clear IndexedDB notes.
 
 This is a small-note editor. It retains every event and tombstone, with no history
 compaction; total history is capped at 200,000 operations. A text edit argument is

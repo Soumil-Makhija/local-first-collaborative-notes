@@ -145,6 +145,25 @@ test('operations with accessors or hidden fields are rejected without executing 
   assert.equal(document.text, '');
 });
 
+test('an inherited operation type getter is never evaluated and batch rejection preserves the clock', () => {
+  const document = new Rga('writer');
+  document.insert(0, 'a');
+  const before = document.operations();
+  let accesses = 0;
+  const inheritedType = Object.assign(Object.create({
+    get type() { accesses++; return 'insert'; },
+  }), { id: '3@remote', after: null, value: 'x' });
+
+  assert.throws(() => document.merge([
+    insertion('2@remote', '1@writer', 'b'),
+    inheritedType,
+  ]), /unknown type or unexpected fields/u);
+  assert.equal(accesses, 0);
+  assert.deepEqual(document.operations(), before);
+  assert.equal(document.text, 'a');
+  assert.equal(document.insert(1, '!')[0].id, '2@writer');
+});
+
 test('conflicting copies of a valid ID are rejected and operation snapshots are defensive', () => {
   const document = new Rga('writer');
   const returned = document.insert(0, 'a');
