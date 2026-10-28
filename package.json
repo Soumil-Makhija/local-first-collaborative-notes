@@ -4,12 +4,19 @@
   "private": true,
   "type": "module",
   "description": "Local-first notes with a custom sequence CRDT and manually paired WebRTC",
-  "engines": { "node": ">=22" },
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "demo": "node scripts/demo.js",
     "test": "node --test tests/*.test.js",
     "benchmark": "node scripts/benchmark.js",
-    "check": "node scripts/check.js"
+    "check": "node scripts/check.js",
+    "start": "node scripts/serve.js",
+    "test:e2e": "playwright test"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "1.64.1"
+  }
 }

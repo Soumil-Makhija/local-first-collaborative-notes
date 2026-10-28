@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1c5142">
+  <meta name="description" content="Private local notes, shared directly with a peer when you choose.">
+  <title>Fieldnotes — local-first collaborative notes</title>
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/src/app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#editor">Skip to note</a>
+  <header class="masthead">
+    <a class="brand" href="/" aria-label="Fieldnotes home"><span aria-hidden="true">▧</span> fieldnotes<span class="brand-dot">.</span></a>
+    <span class="tagline">A little space to think, together.</span>
+    <span class="local-badge">● Local first</span>
+  </header>
+  <div class="workspace">
+    <aside class="sidebar" aria-label="Your notebook">
+      <div class="section-label">YOUR NOTEBOOK</div>
+      <h1>Keep a thought.</h1>
+      <p>Write here. Pick it up later.<br>Invite a peer when you’re ready.</p>
+      <button id="new-note" class="primary" disabled>＋ New note</button>
+      <nav aria-label="Saved notes"><ul id="notes" class="note-list"></ul></nav>
+      <details class="open-document">
+        <summary>Open by note ID</summary>
+        <label for="document-id">Note ID</label>
+        <input id="document-id" maxlength="80" autocomplete="off" spellcheck="false">
+        <button id="open-note" disabled>Open note</button>
+      </details>
+      <p class="sidebar-foot">Your notes live in this browser.<br>Export a backup to keep a separate copy.</p>
+    </aside>
+    <main id="main">
+      <div id="error" role="alert" hidden></div>
+      <section class="note-panel" aria-label="Note editor">
+        <div class="note-toolbar">
+          <span class="section-label">THE OPEN PAGE</span>
+          <div class="backup-actions">
+            <button id="export" class="quiet" disabled>Export backup ↗</button>
+            <label class="file-button" for="import">Import backup<input id="import" type="file" accept=".json,application/json" disabled></label>
+          </div>
+        </div>
+        <label for="editor" class="editor-label">Note text</label>
+        <textarea id="editor" placeholder="Start with a thought…" spellcheck="true" disabled aria-describedby="editor-help"></textarea>
+        <div class="note-footer">
+          <span id="save-status" role="status">Opening notebook…</span>
+          <span id="word-count">0 words · 0 characters</span>
+        </div>
+        <p id="editor-help" class="editor-help">Plain text, with room for everyone’s edits. Concurrent changes merge when peers reconnect.</p>
+      </section>
+      <section class="sharing-panel" aria-labelledby="sharing-title">
+        <div class="sharing-heading"><div><span class="section-label">BETTER TOGETHER</span><h2 id="sharing-title">Pull up another chair.</h2></div><span id="sync-status" role="status">Disconnected</span></div>
+        <p>Pair with one trusted peer to share this note directly. Both of you can keep writing while disconnected.</p>
+        <details id="pairing">
+          <summary>Pair a peer</summary>
+          <ol class="pairing-steps">
+            <li>On the first device, create an offer and copy your pairing data to your peer.</li>
+            <li>On the second device, paste the offer and select <strong>Accept offer</strong>. This opens the shared note and creates an answer.</li>
+            <li>Send that answer back. On the first device, paste it and select <strong>Accept answer</strong>.</li>
+          </ol>
+          <div class="pairing-grid">
+            <div><label for="signal-in">Peer pairing data</label><textarea id="signal-in" rows="4" spellcheck="false" placeholder="Paste your peer’s offer or answer"></textarea><div class="buttons"><button id="accept-offer" disabled>Accept offer</button><button id="accept-answer" disabled>Accept answer</button></div></div>
+            <div><label for="signal-out">Your pairing data</label><textarea id="signal-out" rows="4" spellcheck="false" readonly placeholder="Your offer or answer will appear here"></textarea><div class="buttons"><button id="offer" class="primary" disabled>Create offer</button><button id="copy-signal" disabled>Copy data</button></div></div>
+          </div>
+          <button id="disconnect" class="quiet" disabled>Disconnect peer</button>
+          <p class="connection-note">No discovery or relay service. Direct connections generally need the same local network; some browser and network configurations block pairing. Keep pairing data private. Reconnect by exchanging a fresh offer and answer.</p>
+        </details>
+      </section>
+      <footer class="page-footer"><span id="offline-status" role="status">Preparing offline use…</span><span>Small notes. Shared freely.</span></footer>
+    </main>
+  </div>
+</body>
+</html>
